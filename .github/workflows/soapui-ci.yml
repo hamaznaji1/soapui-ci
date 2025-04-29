@@ -1,0 +1,40 @@
+name: SoapUI Test Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-soapui-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+
+    - name: Download SoapUI
+      run: |
+        wget https://s3.amazonaws.com/downloads.eviware/soapuios/5.8.0/SoapUI-5.8.0-linux-bin.tar.gz
+        tar -xzf SoapUI-5.8.0-linux-bin.tar.gz
+        chmod +x SoapUI-5.8.0/bin/testrunner.sh
+
+    - name: Run SoapUI tests
+      run: |
+        SoapUI-5.8.0/bin/testrunner.sh \
+          -r -j -f reports/ \
+          -I \
+          Stage.xml
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: soapui-test-report
+        path: reports/
