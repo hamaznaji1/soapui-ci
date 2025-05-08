@@ -2,8 +2,12 @@ name: Run SoapUI Tests
 
 on:
   push:
+    branches:
+      - master
     paths:
       - 'soapui/**'
+      - 'reports/**'
+
   workflow_dispatch:
 
 jobs:
