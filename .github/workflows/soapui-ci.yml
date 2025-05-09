@@ -34,7 +34,7 @@ jobs:
           Stage.xml
 
     - name: Upload SoapUI test results
-      uses: actions/upload-artifact@8f54f19d49179247a54ed0d4f8f0f2c332cc31a1
+      uses: actions/upload-artifact@v4
       with:
         name: soapui-test-results
         path: reports/
